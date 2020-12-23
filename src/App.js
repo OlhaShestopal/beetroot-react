@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import { useReducer, useState } from 'react';
+import { StoreContext, reducer, initialState } from './store';
+import { AppHeader } from './components/AppHeader';
+import { Todos } from './components/Todos';
+import { CreateTodoModal } from './components/CreateTodoModal';
+import './main.css';
 
 function App() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const [isVisible, setVisible] = useState(false);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <StoreContext.Provider value={{ state, dispatch }}>
+        <AppHeader handleOpenModal={() => setVisible(true)} />
+        <Todos />
+        {isVisible && <CreateTodoModal />}
+      </StoreContext.Provider>
     </div>
   );
 }
 
-export default App;
+export {
+  App
+};
